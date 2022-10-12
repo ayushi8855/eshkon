@@ -1,6 +1,6 @@
 import React, { useContext, useState } from 'react'
 import { AuthContext } from "../contexts/AuthContext";
-import { Navigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import {
     FormControl,
     FormLabel,
@@ -12,7 +12,8 @@ import {
    
   } from '@chakra-ui/react'
 export const SignIn = () => {
-  const { handleAuth } = useContext(AuthContext);
+  const navigate = useNavigate();
+  // const { handleAuth } = useContext(AuthContext);
   const [loginData, setLoginData] = useState({});
 
   const toast = useToast();
@@ -44,7 +45,7 @@ export const SignIn = () => {
         duration: 4000,
         isClosable: true,
       });
-      <Navigate to="/" replace={false} />;
+    navigate ("/");
       
       window.location.href="/";
     } else{

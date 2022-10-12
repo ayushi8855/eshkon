@@ -3,6 +3,7 @@ import {useToast} from "@chakra-ui/react";
 import { useContext} from "react";
 import { AuthContext } from "../contexts/AuthContext";
 import { nanoid } from "nanoid";
+import { useNavigate } from "react-router-dom";
 import {
     FormControl,
     FormLabel,
@@ -16,7 +17,7 @@ import {
 
 
 export const SignUp = () => {
-
+  const navigate = useNavigate();
   const { handleAuth } = useContext(AuthContext);
   const [formData, setFormData] = useState({
    
@@ -59,6 +60,7 @@ export const SignUp = () => {
             duration: 5000,
             isClosable: true,
           });
+   navigate ("/login") 
         }
       }
       else{
