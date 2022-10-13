@@ -86,7 +86,9 @@ export const SignUp = () => {
   
   
   return (
-    <Box maxW='sm' borderWidth='1px' borderRadius='lg'margin="auto" padding="10px">
+   
+    <Box maxW='sm' borderWidth='1px' borderRadius='lg'margin="auto" padding="10px" marginTop={100}>
+    
         <form onSubmit={handleSubmit}>
         <FormControl >
         

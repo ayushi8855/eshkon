@@ -1,7 +1,9 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { AuthContext } from "../contexts/AuthContext";
 import { useNavigate } from "react-router-dom";
-import {
+import GoogleLogin from "react-google-login"
+
+import { 
     FormControl,
     FormLabel,
     FormHelperText,
@@ -11,9 +13,10 @@ import {
   
    
   } from '@chakra-ui/react'
+import { refreshTokenSetup } from '../refreshTokenSetup';
 export const SignIn = () => {
   const navigate = useNavigate();
-  // const { handleAuth } = useContext(AuthContext);
+  const { handleAuth } = useContext(AuthContext);
   const [loginData, setLoginData] = useState({});
 
   const toast = useToast();
@@ -47,7 +50,8 @@ export const SignIn = () => {
       });
     navigate ("/");
       
-      window.location.href="/";
+      // window.location.href="/";
+      handleAuth()
     } else{
       toast({
         title: "Validation failed please try again!",
@@ -57,9 +61,21 @@ export const SignIn = () => {
       });
     }
    
-      
-    
+ 
   };
+  const responseSuccessGoogle = (response) => {
+    // console.log(response.profileObj.name);
+    localStorage.setItem("user", JSON.stringify(response.profileObj));
+    refreshTokenSetup(response)
+    navigate("/");
+  };
+  const responseErrorGoogle = (response) => {
+    // console.log(response);
+  };
+  useEffect(() => {
+    
+},[responseSuccessGoogle]);
+
   return (
     <Box maxW='sm' borderWidth='1px' borderRadius='lg'margin="auto" padding="10px">
       <form onSubmit={handleSubmit}>
@@ -67,7 +83,7 @@ export const SignIn = () => {
       
     <FormLabel>Email address</FormLabel>
     <Input type='email'
-    name='email'
+     name='email'
      onChange={handleChange}
     />
   
@@ -76,7 +92,7 @@ export const SignIn = () => {
     </FormHelperText>
  
 
- <FormLabel>Password</FormLabel>
+   <FormLabel>Password</FormLabel>
     <Input type='password'
     name="password"
      onChange={handleChange}
@@ -86,11 +102,23 @@ export const SignIn = () => {
       Enter the password.
     </FormHelperText>
   
-    <Input type="submit" value="Sign In" bg="#3EC70B"></Input>
+    <Input type="submit" value="Sign In" bg="#3EC70B" marginBottom={10}></Input>
       
   
     </FormControl>
     </form>
+    <GoogleLogin 
+                  
+          clientId="221635093495-gtt7i5tpnriopvhp0ds3llj573elforh.apps.googleusercontent.com"
+          buttonText="Login with Google"
+          onSuccess={responseSuccessGoogle}
+          onFailure={responseErrorGoogle}
+          expectcssClass="google-button"
+          cookiePolicy={"single_host_origin"}
+        
+          isSignedIn={true}
+         
+        />
     </Box>
   )
 }
